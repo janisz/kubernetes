@@ -181,6 +181,15 @@ func TestDockerConfigEntryJSONDecode(t *testing.T) {
 			},
 			fail: true,
 		},
+
+		// auth field with non UTF-8 causes failure
+		{
+			input: []byte(`{"auth": "YcV6OmHFeg==", "email": "foo@example.com"}`),
+			expect: DockerConfigEntry{
+				Email: "foo@example.com",
+			},
+			fail: true,
+		},
 	}
 
 	for i, tt := range tests {
