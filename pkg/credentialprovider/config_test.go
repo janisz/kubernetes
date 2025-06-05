@@ -181,15 +181,6 @@ func TestDockerConfigEntryJSONDecode(t *testing.T) {
 			},
 			fail: true,
 		},
-
-		// auth field with non UTF-8 causes failure
-		{
-			input: []byte(`{"auth": "YcV6OmHFeg==", "email": "foo@example.com"}`),
-			expect: DockerConfigEntry{
-				Email: "foo@example.com",
-			},
-			fail: true,
-		},
 	}
 
 	for i, tt := range tests {
@@ -252,6 +243,12 @@ func TestDecodeDockerConfigFieldAuth(t *testing.T) {
 			input:    encodeDockerConfigFieldAuth("foo", "bar"),
 			username: "foo",
 			password: "bar",
+		},
+
+		// non UTF-8 character
+		{
+			input: encodeDockerConfigFieldAuth("foo", "a\xc5z"),
+			fail:  true,
 		},
 
 		// good base64 data, but no colon separating username & password
