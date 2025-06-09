@@ -22,6 +22,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	utilfeature "k8s.io/apiserver/pkg/util/feature"
+	"k8s.io/kubernetes/pkg/features"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -301,7 +303,7 @@ func decodeDockerConfigFieldAuth(field string) (username, password string, err e
 		return
 	}
 	decodedStr := string(decoded)
-	if !utf8.ValidString(decodedStr) {
+	if !utf8.ValidString(decodedStr) && utilfeature.DefaultFeatureGate.Enabled(features.DockerCredentialUTF8Validation) {
 		return "", "", errors.New("unable to parse auth field, must be valid UTF-8")
 	}
 	parts := strings.SplitN(decodedStr, ":", 2)
