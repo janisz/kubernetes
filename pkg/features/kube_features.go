@@ -206,7 +206,7 @@ const (
 	// Restores previous behavior where Kubelet fails self registration if node create returns 403 Forbidden.
 	KubeletRegistrationGetOnExistsOnly featuregate.Feature = "KubeletRegistrationGetOnExistsOnly"
 
-	// owner: @SergeyKanzhelev
+	// owner: @janisz
 	//
 	// DockerCredentialUTF8Validation enables UTF-8 validation for base64 encoded auth for Docker config secret.
 	// This temporary feature gate is enabled by default and intended to give a quick escape hatch for a single release
